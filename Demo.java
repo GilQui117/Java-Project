@@ -1,12 +1,15 @@
 //all things needed for this program
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.sql.*;
 
 public class Demo extends JPanel {
 	//all the buttons,textfields, labels used for the first window, and the strings used for the inputs
-    private JButton jcomp1;
+    private final JButton jcomp1;
     private JButton Button2;
     private JTextField R2;
     private JTextField R1;
@@ -29,6 +32,7 @@ public class Demo extends JPanel {
     private String T5;
     private String T6;
     private String T7;
+    private static JFrame self;
     
     public Demo() {
     	
@@ -100,6 +104,7 @@ public class Demo extends JPanel {
     private class okbuttonlistener implements ActionListener
     {
     	
+            @Override
     	public void actionPerformed(ActionEvent e)
     	{
     		//all text is stored in the strings
@@ -110,11 +115,31 @@ public class Demo extends JPanel {
     		T5 = R5.getText().toString();
     		T6 = R6.getText().toString();
     		T7 = R7.getText().toString();
-    		//Then second window comes out
-    		JFrame anotherframe = new My_window();
+    		String T8 = T1 + T2 + ":" + T3 + "/" + T4;
+    		try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();//T7).newInstance();
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InstantiationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+                
+                Connection connection = null;
+                try {
+                    connection = DriverManager.getConnection( T8, T5, T6 );
+                } catch (SQLException ex) {
+                    Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
+                    System.exit(0);
+                }
+    		JFrame anotherframe = new My_window(connection);
     		setVisible(false);
     		anotherframe.setVisible(true);
-    		
+    		self.dispose();
     		
     		
     	}
@@ -122,6 +147,7 @@ public class Demo extends JPanel {
     }
     private class button2listener implements ActionListener
     {
+            @Override
     	public void actionPerformed(ActionEvent e)
     	{
     		//closes window
@@ -131,6 +157,7 @@ public class Demo extends JPanel {
     public static void main (String[] args) throws InterruptedException{
     	//here frame is made
         JFrame frame = new JFrame ("Database Connection");
+        self = frame;
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add (new Demo());//adds everything made in Demo() to frame
         frame.pack();

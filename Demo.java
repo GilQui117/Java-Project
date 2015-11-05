@@ -1,12 +1,15 @@
 //all things needed for this program
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.sql.*;
 
 public class Demo extends JPanel {
 	//all the buttons,textfields, labels used for the first window, and the strings used for the inputs
-    private JButton jcomp1;
+    private final JButton jcomp1;
     private JButton Button2;
     private JTextField R2;
     private JTextField R1;
@@ -100,6 +103,7 @@ public class Demo extends JPanel {
     private class okbuttonlistener implements ActionListener
     {
     	
+            @Override
     	public void actionPerformed(ActionEvent e)
     	{
     		//all text is stored in the strings
@@ -110,8 +114,29 @@ public class Demo extends JPanel {
     		T5 = R5.getText().toString();
     		T6 = R6.getText().toString();
     		T7 = R7.getText().toString();
-    		//Then second window comes out
-    		JFrame anotherframe = new My_window();
+                try {
+                    //Then second window comes out
+                    Class.forName(T7).newInstance();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
+                    System.exit(0);
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
+                    System.exit(0);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
+                    System.exit(0);
+                }
+                String T8=T1+T2+":"+T3+"/"+T4;
+                
+                Connection connection = null;
+                try {
+                    connection = DriverManager.getConnection(T8,T5,T6);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
+                    System.exit(0);
+                }
+    		JFrame anotherframe = new My_window(connection);
     		setVisible(false);
     		anotherframe.setVisible(true);
     		
@@ -122,6 +147,7 @@ public class Demo extends JPanel {
     }
     private class button2listener implements ActionListener
     {
+            @Override
     	public void actionPerformed(ActionEvent e)
     	{
     		//closes window

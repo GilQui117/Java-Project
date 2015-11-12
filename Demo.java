@@ -32,6 +32,7 @@ public class Demo extends JPanel {
     private String T5;
     private String T6;
     private String T7;
+    private static JFrame self;
     
     public Demo() {
     	
@@ -107,31 +108,30 @@ public class Demo extends JPanel {
     	public void actionPerformed(ActionEvent e)
     	{
     		//all text is stored in the strings
-    		T1 = R1.getText().toString();
-    		T2 = R2.getText().toString();
-    		T3 = R3.getText().toString();
-    		T4 = R4.getText().toString();
-    		T5 = R5.getText().toString();
-    		T6 = R6.getText().toString();
-    		T7 = R7.getText().toString();
-                try {
-                    //Then second window comes out
-                    Class.forName(T7).newInstance();
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
-                    System.exit(0);
-                } catch (InstantiationException ex) {
-                    Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
-                    System.exit(0);
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
-                    System.exit(0);
-                }
-                String T8=T1+T2+":"+T3+"/"+T4;
+    		T1 = "jdbc:mysql://";	//R1.getText().toString();
+    		T2 ="localhost"; 	//R2.getText().toString();
+    		T3 = "3306";	//R3.getText().toString();
+    		T4 = "auction";	//R4.getText().toString();
+    		T5 = 	"root";//R5.getText().toString();
+    		T6 = 	"(9Mynameismyname";//R6.getText().toString();
+    		T7 = 	"com.mysql.jdbc.Driver";//R7.getText().toString();
+    		String T8 = T1 + T2 + ":" + T3 + "/" + T4;
+    		try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();//T7).newInstance();
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InstantiationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
                 
                 Connection connection = null;
                 try {
-                    connection = DriverManager.getConnection(T8,T5,T6);
+                    connection = DriverManager.getConnection( T8, T5, T6 );
                 } catch (SQLException ex) {
                     Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
                     System.exit(0);
@@ -139,7 +139,7 @@ public class Demo extends JPanel {
     		JFrame anotherframe = new My_window(connection);
     		setVisible(false);
     		anotherframe.setVisible(true);
-    		
+    		self.dispose();
     		
     		
     	}
@@ -157,6 +157,7 @@ public class Demo extends JPanel {
     public static void main (String[] args) throws InterruptedException{
     	//here frame is made
         JFrame frame = new JFrame ("Database Connection");
+        self = frame;
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add (new Demo());//adds everything made in Demo() to frame
         frame.pack();

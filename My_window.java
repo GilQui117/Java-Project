@@ -38,22 +38,6 @@ public class My_window extends JFrame
     private JScrollPane scroll;
     
    
-	//runs the window
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					My_window frame = new My_window();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	//here components for frame is created
-   
 	public My_window(Connection connection2)
 	{
                 connection1=connection2;
@@ -84,18 +68,8 @@ public class My_window extends JFrame
 		
 		
 		scroll = new JScrollPane();
-		//panel_1.setLayout(null);
-		//panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Result", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		scroll.setBounds(30, 215, 824, 314);
 		contentPane.add(scroll);
-		
-		//JScrollPane scrollPane = new JScrollPane();
-		//scrollPane.setBounds(30, 30, 784, 260);
-		//panel_1.add(scrollPane);
-		
-		//JTextArea textArea_1 = new JTextArea();
-		//textArea_1.setEditable(false);
-		//scrollPane.setViewportView(textArea_1);
 		
 		JButton btnNewButton = new JButton("Execute");
 		//here text inputted is stored into string input
@@ -105,7 +79,7 @@ public class My_window extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
                                 ResultSet rs;
-				Input = textArea.getText().toString();  
+                                Input = textArea.getText().toString();  
                             try {
                                 Statement statement=connection1.createStatement();
                                 if(Input.charAt(0)=='U'||Input.charAt(0)=='u'||Input.charAt(0)=='D'||Input.charAt(0)=='d'||Input.charAt(0)=='I'||Input.charAt(0)=='i'||Input.charAt(0)=='c'||Input.charAt(0)=='C'){
@@ -366,8 +340,7 @@ public class My_window extends JFrame
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						input = "DELIMITER $$ "
-								+ " create trigger item_check "
+						input =  " create trigger item_check "
 								+ " before insert on items "
 								+ " for each row "
 								+ " begin "
@@ -457,11 +430,16 @@ public class My_window extends JFrame
 								+ " SET message_text = 'No update with a bid lower than current bid.'; "
 								+ " elseif (new.Vehicle_title = 'N') then "
 								+ " signal sqlstate '45000' "
-								+ " set message_text = 'Vehicle doesn\'t have title'; "
+								+ " set message_text = 'Vehicle doesn\t have title'; "
 								+ " end if; "
-								+ " end; "
-								+ " $$ "
-								+ " create Trigger greater_bid "
+								+ " end; ";								
+						try {
+							int a=statement.executeUpdate(input);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						input = " create Trigger greater_bid "
 								+ " before update on items "
 								+ " for each row "
 								+ " begin "
@@ -469,17 +447,13 @@ public class My_window extends JFrame
 								+ " signal sqlstate '45000' "
 								+ " SET message_text = 'No update with a bid lower than current bid.'; "
 								+ " end if; "
-								+ " end; "
-								+ " $$ "
-								+ " DELIMITER ; ";
+								+ " end; ";
 						try {
 							int a=statement.executeUpdate(input);
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						
-						
 			}
 		});
 

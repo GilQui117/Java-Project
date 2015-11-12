@@ -113,7 +113,7 @@ public class Demo extends JPanel {
     		T3 = "3306";	//R3.getText().toString();
     		T4 = "auction";	//R4.getText().toString();
     		T5 = 	"root";//R5.getText().toString();
-    		T6 = 	"(9Mynameismyname";//R6.getText().toString();
+    		T6 = 	R6.getText().toString();
     		T7 = 	"com.mysql.jdbc.Driver";//R7.getText().toString();
     		String T8 = T1 + T2 + ":" + T3 + "/" + T4;
     		try {

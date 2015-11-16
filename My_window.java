@@ -67,19 +67,12 @@ public class My_window extends JFrame
 		
 		
 		scroll = new JScrollPane();
-		//panel_1.setLayout(null);
-		//panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Result", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		
+		
 		scroll.setBounds(30, 215, 824, 314);
 		contentPane.add(scroll);
 		
-		//JScrollPane scrollPane = new JScrollPane();
-		//scrollPane.setBounds(30, 30, 784, 260);
-		//panel_1.add(scrollPane);
-		
-		//JTextArea textArea_1 = new JTextArea();
-		//textArea_1.setEditable(false);
-		//scrollPane.setViewportView(textArea_1);
-		
+	
 		JButton btnNewButton = new JButton("Execute");
 		//here text inputted is stored into string input
 		btnNewButton.addActionListener(new ActionListener() 
@@ -119,13 +112,9 @@ public class My_window extends JFrame
                                             p++;
                                         }
                                         contentPane.remove(scroll);
-                                      //not sure if this is how to add to bottom of screen im pretty
-                                        //sure the data is in the string arrays though
+                                    
                                         table = new JTable(data,column);
-                                        //table.setModel(new DefaultTableModel(data,column));
-                                        //table.setPreferredScrollableViewportSize(new Dimension(1000,1000));
-                                        //table.setFillsViewportHeight(true);
-                                        //contentPane.add(table);
+                                     
                                         scroll = new JScrollPane(table);
                                 		table.setFillsViewportHeight(true);
                                 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -157,12 +146,12 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_2 = new JButton("Union");
-		// resets both fields
+		
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textArea.setText("select * from Items where category = 'Books' And Books_Genre = 'Action'"
 						+ " Union "
-						+ "select * from Items where category = 'Books' and books_Genre = 'Adventure';");
+						+ "select * from Items where category = 'Books' and books_Genre = 'Adventure'");
 
 				 btnNewButton.doClick();
 			}
@@ -173,11 +162,11 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_3 = new JButton("Intersection");
-		// resets both fields
+		
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textArea.setText("select * from account a where length(password) < 14 AND EXISTS "
-						+ "(select * from account b where NOT( b.password rlike '[0-9]' AND b.password rlike '[a-z]') AND a.email = b.email);");
+						+ "(select * from account b where NOT(regexp_like(b.password, '[0-9]') AND (regexp_like(b.password, '[a-z]') OR regexp_like(b.password, '[A-Z]'))) AND a.email = b.email)");
 				 btnNewButton.doClick();
 			}
 		});
@@ -187,10 +176,10 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_4 = new JButton("Difference");
-		// resets both fields
+	
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("select * from account a1, (select * from account a2 where a2.email NOT like '%@gmail.com') as s1 where a1.email = s1.email;");
+				textArea.setText("select * from account a1, (select * from account a2 where a2.email NOT like '%@gmail.com')  s1 where a1.email = s1.email");
 				 btnNewButton.doClick();
 			}
 		});
@@ -200,15 +189,15 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_5 = new JButton("Division");
-		// resets both fields
+	
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textArea.setText("SELECT  a1.email "
-						+ " FROM account as a1 "
-						+ " WHERE (select count(coun1.category) from (Select s1.category, s2.email from (SELECT Distinct i3.category FROM Items as i3) as s1, "
+						+ " FROM account  a1 "
+						+ " WHERE (select count(coun1.category) from (Select s1.category, s2.email from (SELECT Distinct i3.category FROM Items  i3) s1, "
 						+ " (SELECT Distinct i2.category, b2.email "
-						+ " FROM  belongsTo as b2, Items as i2 "
-						+ " WHERE  b2.ID = i2.ID) as s2 where s1.category = s2.category) as coun1 where a1.email = coun1.email) = 8;");
+						+ " FROM  belongsTo  b2, Items  i2 "
+						+ " WHERE  b2.ID = i2.ID)  s2 where s1.category = s2.category)  coun1 where a1.email = coun1.email) = 8");
 				 btnNewButton.doClick();
 			}
 		});
@@ -219,10 +208,10 @@ public class My_window extends JFrame
 		
 		
 		JButton btnNewButton_6 = new JButton("Aggregation");
-		// resets both fields
+	
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("select count(*) from account;");
+				textArea.setText("select count(*) from account");
 				 btnNewButton.doClick();
 			}
 		});
@@ -232,10 +221,10 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_7 = new JButton("Join");
-		// resets both fields
+	
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("select * from belongsTo as b inner join account as a inner join items as i where b.email = a.email AND i.ID = b.ID;");
+				textArea.setText("select * from (select * from belongsTo b inner join account a ON b.email = a.email) s inner join items i ON i.ID = s.ID");
 				 btnNewButton.doClick();
 			}
 		});
@@ -246,7 +235,7 @@ public class My_window extends JFrame
 		
 		
 		JButton btnNewButton_8 = new JButton("Create");
-		// resets both fields
+	
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 Statement statement = null;
@@ -256,22 +245,18 @@ public class My_window extends JFrame
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
-				String input="CREATE TABLE account "
-						+ "(First_Name CHAR(25) NOT NULL, "
-						+ " Last_Name CHAR(25) NOT NULL, "
-						+ " EMAIL CHAR(40), "
-						+ " Address CHAR(40), "
-						+ " Credit_Card_Number CHAR(40), "
-						+ " Password CHAR(30) NOT NULL, "
-						+ " Primary KEY(EMAIL) ); ";
+				
+				String input="CREATE TABLE account(First_Name VARCHAR(25) NOT NULL, Last_Name varCHAR(25) NOT NULL, EMAIL VARCHAR(40) PRIMARY KEY, Address VARCHAR(40), "
+						+ " Credit_Card_Number VARCHAR(40), Password VARCHAR(30) NOT NULL )";
 						try {
 							int a=statement.executeUpdate(input);
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						input ="Create table belongsTo(ID INT, email CHAR(40),primary key(ID), foreign key(email) references account(email) "
-						+ " ); ";
+						input ="CREATE TABLE belongsto(ID INT PRIMARY KEY, EMAIL VARCHAR(40),"
+								+ "CONSTRAINT fk_email FOREIGN KEY (EMAIL)"
+								+ " REFERENCES account(EMAIL))";
 						try {
 							int a=statement.executeUpdate(input);
 						} catch (SQLException e1) {
@@ -279,199 +264,75 @@ public class My_window extends JFrame
 							e1.printStackTrace();
 						}
 						input="CREATE TABLE items("
-						+ "ID INT,"
-						+ "name CHAR(30),"
-						+ "description TEXT(360),"
-						+ "time_left DATETIME,"
-						+ "item_condition CHAR(30),"
-						+ "previous_bid DOUBLE,"
-						+ "current_bid DOUBLE,"
-						+ "starting_bid DOUBLE,"
-						+ "selling_price DOUBLE,"
-						+ "category CHAR(20),"
-						+ "Sporting_Goods_Brand CHAR(30),"
-						+ "Sporting_Goods_Weight DOUBLE,"
-						+ "Sporting_Goods_Dimension_LxWxH DOUBLE,"
-						+ "NBA BOOLEAN,"
-						+ "NHL boolean,"
-						+ "NFL boolean,"
-						+ "MLB boolean,"
-						+ "NCAA boolean,"
-						+ "Exercise boolean,"
-						+ "Studio char(30),"
-						+ "Movie_Length TIME,"
-						+ "Movie_Release_Date DATE,"
-						+ "Director CHAR(30),"
-						+ "Movie_Genre char(20),"
-						+ "Movie_Rating char(5),"
-						+ "Games_Release_Date DATE,"
-						+ "Games_publisher char(50),"
-						+ "platform char(20),"
-						+ "Games_Genre char(20),"
-						+ "Games_Rating char(8),"
-						+ "Clothing_Weight DOUBLE,"
-						+ "Size CHAR(10),"
-						+ "Women boolean,"
-						+ "Men boolean,"
-						+ "Children boolean,"
-						+ "Occasion char(20),"
-						+ "Unisex boolean,"
-						+ "Clothing_Brand char(30),"
-						+ "Material char(30),"
-						+ "Electronics_Brand char(50),"
-						+ "Electronics_Model char(30),"
-						+ "Processor char(30),"
-						+ "RAM INT,"
-						+ "hard_drive char(30),"
-						+ "GPU char(30),"
-						+ "Model_Number char(30),"
-						+ "Operating_System char(30),"
-						+ "Electronics_Weight DOUBLE,"
-						+ "Electronics_item_dimension_LxWxH DOUBLE,"
-						+ "USB_ports INT,"
-						+ "Music_Genre char(20),Music_Release_Date DATE,"
-						+ "Music_Length Double,"
-						+ "Label char(30),"
-						+ "Vehicle_Model char(30),"
-						+ "Make char(30),"
-						+ "mileage INT,"
-						+ "Vehicle_Year DATE,"
-						+ "Exterior_Color char(15),"
-						+ "Number_Of_Cylinders INT,"
-						+ "VIN INT unique,"
-						+ "Vcondition char(50),"
-						+ "Vehicle_title boolean,"
-						+ "Drive_Type char(20),"
-						+ "VEngine char(20),"
-						+ "Transmission char(15),"
-						+ "Books_Genre char(15),"
-						+ "Books_Publisher char(30),"
-						+ "hardcover Boolean,"
-						+ "Page_Number INT,"
-						+ "ISBN char(17),"
-						+ "author char(50),"
-						+ "primary key(ID),"
-						+ "foreign key(ID) references belongsTo(ID) );";
+								+ "ID INT PRIMARY KEY, name VARCHAR(30) NOT NULL, description VARCHAR(255), time_left TIMESTAMP, "
+								+ " item_condition VARCHAR(30), previous_bid FLOAT, "
+								+ " current_bid FLOAT, starting_bid FLOAT, "
+								+ " selling_price FLOAT, "
+								+ " category VARCHAR(20), "
+								+ " Sporting_Goods_Brand VARCHAR(30), "
+								+ " Sporting_Goods_Weight FLOAT, Sporting_Goods_Dimension_LxWxH FLOAT, NBA VARCHAR(1)  DEFAULT 'N', "
+								+ " NHL VARCHAR(1) DEFAULT 'N', "
+								+ " NFL VARCHAR(1) DEFAULT 'N', MLB VARCHAR(1) DEFAULT 'N', NCAA VARCHAR(1)  DEFAULT 'N', Exercise VARCHAR(1)  DEFAULT 'N', "
+								+ " Studio VARCHAR(30) DEFAULT 'N/A', Movie_Length Float, Movie_Release_Date DATE, Director VARCHAR(30) DEFAULT 'N/A', Movie_Genre VARCHAR(20)  DEFAULT 'N/A', Movie_Rating VARCHAR(5), Games_Release_Date DATE, Games_publisher VARCHAR(50)  DEFAULT 'N/A', platform VARCHAR(20)  DEFAULT 'N/A', "
+								+ " Games_Genre VARCHAR(20)  DEFAULT 'N/A', Games_Rating VARCHAR(8)  DEFAULT 'N/A', "
+								+ " Clothing_Weight FLOAT, "
+								+ " CSize VARCHAR(10), Women VARCHAR(1)  DEFAULT 'N', Men VARCHAR(1)  DEFAULT 'N', "
+								+ " Children VARCHAR(1)  DEFAULT 'N', Occasion VARCHAR(20)  DEFAULT 'N/A', "
+								+ " Unisex VARCHAR(1)  DEFAULT 'N', "
+								+ " Clothing_Brand VARCHAR(30)  DEFAULT 'N/A', Material VARCHAR(30)  DEFAULT 'N/A', "
+								+ " Electronics_Brand VARCHAR(50)  DEFAULT 'N/A', "
+								+ " Electronics_Model VARCHAR(30)  DEFAULT 'N/A', "
+								+ " Processor VARCHAR(30)  DEFAULT 'N/A', RAM INT, "
+								+ " hard_drive VARCHAR(30)  DEFAULT 'N/A', GPU VARCHAR(30)  DEFAULT 'N/A', Model_Number VARCHAR(30), Operating_System VARCHAR(30)  DEFAULT 'N/A', Electronics_Weight FLOAT, Elect_item_dim_LxWxH FLOAT, USB_ports INT, Music_Genre VARCHAR(20)  DEFAULT 'N/A', Music_Release_Date DATE, Music_Length FLOAT, Label VARCHAR(30)  DEFAULT 'N/A', "
+								+ " Vehicle_Model VARCHAR(30)  DEFAULT 'N/A', Make VARCHAR(30), "
+								+ " mileage INT, Vehicle_Year VARCHAR(15), "
+								+ " Exterior_Color VARCHAR(15)  DEFAULT 'N/A', "
+								+ " VCondition VARCHAR(10)  DEFAULT 'N/A', "
+								+ " Number_Of_Cylinders INT, VIN VARCHAR(30), "
+								+ " Vehicle_title VARCHAR(1), Drive_Type VARCHAR(20)  DEFAULT 'N/A', "
+								+ " VEngine VARCHAR(20)  DEFAULT 'N/A', "
+								+ " Transmission VARCHAR(15)  DEFAULT 'N/A', Books_Genre VARCHAR(15), Books_Publisher VARCHAR(30)  DEFAULT 'N/A', hardcover VARCHAR(1), "
+								+ " Page_Number INT, "
+								+ " ISBN VARCHAR(17), "
+								+ " author VARCHAR(50)  DEFAULT 'N/A', "
+								+ " CONSTRAINT fk_id FOREIGN KEY (ID) REFERENCES belongsto(ID), "
+								+ " CHECK(category IN ('Books', 'Sporting Goods', 'Movie', 'Games', 'Clothing', ' Electronics', ' Misc', ' Music',  'Vehicles')), "
+								+ " CHECK(ID IS NOT NULL "
+								+ " AND name IS NOT NULL AND description IS NOT NULL AND time_left IS NOT NULL AND item_condition IS NOT NULL AND previous_bid IS NOT NULL AND current_bid IS NOT NULL AND starting_bid >0 "
+								+ " AND selling_price >0 "
+								+ " AND category IS NOT NULL), "
+								+ " CHECK( ( category = 'Sporting_Goods' AND Sporting_Goods_Brand IS NOT NULL AND Sporting_Goods_Weight > 0 "
+								+ " AND Sporting_Goods_Dimension_LxWxH IS NOT NULL AND NBA IS NOT NULL "
+								+ " AND NHL IS NOT NULL "
+								+ " AND NFL IS NOT NULL "
+								+ " AND MLB IS NOT NULL AND NCAA IS NOT NULL AND Exercise IS NOT NULL "
+								+ " )OR "
+								+ " ( category = 'Movie' AND Studio IS NOT NULL AND Movie_Length IS NOT NULL AND Movie_Release_Date IS NOT NULL AND Director IS NOT NULL AND Movie_Genre IS NOT NULL AND Movie_Rating IN ('G', 'PG', 'PG-13', 'R', 'NC-17')) OR "
+								+ " ( category = 'Games' AND Games_Release_Date IS NOT NULL AND Games_Publisher IS NOT NULL AND Platform IS NOT NULL AND Games_Genre IS NOT NULL AND Games_Rating IN ('eC', 'E', 'E-10+', 'T', 'M', 'Ao', 'RP'))OR "
+								+ " ( category = 'Clothing' AND Clothing_Weight IS NOT NULL AND CSize IN('Small', 'Medium', 'Large', 'X-Large', 'XX-Large') AND Women IS NOT NULL AND Men IS NOT NULL AND Children IS NOT NULL AND Occasion IS NOT NULL AND Unisex IS NOT NULL "
+								+ " AND Clothing_Brand IS NOT NULL AND Material IS NOT NULL) "
+								+ " OR "
+								+ " ( category = 'Electronics' "
+								+ " AND Electronics_Brand IS NOT NULL AND Processor IS NOT NULL AND Electronics_Model IS NOT NULL AND RAM IS NOT NULL "
+								+ " AND hard_drive IS NOT NULL AND GPU IS NOT NULL AND Model_Number IS NOT NULL AND Operating_System IS NOT NULL AND Electronics_Weight > 0 AND Elect_item_dim_LxWxH IS NOT NULL "
+								+ " AND USB_ports IS NOT NULL ) "
+								+ " OR "
+								+ " ( category = 'Music' "
+								+ " AND Label IS NOT NULL "
+								+ " AND Music_Genre IS NOT NULL "
+								+ " AND Music_Release_Date IS NOT NULL AND Music_Length IS NOT NULL)OR "
+								+ " ( category = 'Vehicles' AND VIN IS NOT NULL AND Vehicle_Model IS NOT NULL AND Make IS NOT NULL "
+								+ " AND mileage IS NOT NULL AND Vehicle_Year IS NOT NULL AND Exterior_Color IS NOT NULL AND (Number_Of_Cylinders >-1 AND Number_Of_Cylinders < 13) AND VIN IS NOT NULL AND Vehicle_title IS NOT NULL AND Drive_Type IS NOT NULL AND VEngine IS NOT NULL AND Transmission IS NOT NULL "
+								+ "  AND VCondition IN ('used', 'new'))OR "
+								+ " ( category = 'Books' AND Books_Genre IS NOT NULL AND Books_Publisher IS NOT NULL AND hardcover IS NOT NULL AND Page_Number > 0 AND ISBN IS NOT NULL AND author IS NOT NULL) "
+								+ " ))";
 						try {
 							int a=statement.executeUpdate(input);
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						/*input = "DELIMITER $$ "
-								+ " create trigger item_check "
-								+ " before insert on items "
-								+ " for each row "
-								+ " begin "
-								+ " if NOT ( (new.category = 'Books' "
-								+ " AND new.Books_Genre IS NOT NULL " 
-								+ " AND new.Books_Publisher IS NOT NULL "
-								+ " AND new.hardcover IS NOT NULL "
-								+ " AND new.Page_Number > 0 "
-								+ " AND new.ISBN IS NOT NULL "
-								+ " AND new.author IS NOT NULL)"
-								+ " OR "
-								+ " ( new.category = 'Sporting Goods' "
-								+ " AND new.Sporting_Goods_Brand IS NOT NULL "
-								+ " AND new.Sporting_Goods_Weight > 0 "
-								+ " AND new.Sporting_Goods_Dimension_LxWxH IS NOT NULL "
-								+ " AND new.NBA IS NOT NULL "
-								+ " AND new.NHL IS NOT NULL "
-								+ " AND new.NFL IS NOT NULL "
-								+ " AND new.MLB IS NOT NULL "
-								+ " AND new.NCAA IS NOT NULL "
-								+ " AND new.Exercise IS NOT NULL ) "
-								+ " OR "
-								+ " ( new.category = 'Movie' "
-								+ " AND new.Studio IS NOT NULL "
-								+ " AND new.Movie_Length IS NOT NULL "
-								+ " AND new.Movie_Release_Date IS NOT NULL "
-								+ " AND new.Director IS NOT NULL "
-								+ " AND new.Movie_Genre IS NOT NULL "
-								+ " AND new.Movie_Rating IS NOT NULL ) "
-								+ " OR "
-								+ " ( new.category = 'Games' "
-								+ " AND new.Games_Release_Date IS NOT NULL "
-								+ " AND new.Games_Publisher IS NOT NULL "
-								+ " AND new.Platform IS NOT NULL "
-								+ " AND new.Games_Genre IS NOT NULL "
-								+ " AND new.Games_Rating IS NOT NULL ) "
-								+ " OR "
-								+ " ( new.category = 'Clothing' "
-								+ " AND new.Clothing_Weight IS NOT NULL "
-								+ " AND new.Size IS NOT NULL "
-								+ " AND new.Women IS NOT NULL "
-								+ " AND new.Men IS NOT NULL "
-								+ " AND new.Children IS NOT NULL "
-								+ " AND new.Occasion IS NOT NULL "
-								+ " AND new.Unisex IS NOT NULL "
-								+ " AND new.Clothing_Brand IS NOT NULL "
-								+ " AND new.Material IS NOT NULL ) "
-								+ " OR"
-								+ " ( new.category = 'ELectronics' "
-								+ " AND new.Electronics_Brand IS NOT NULL "
-								+ " AND new.Processor IS NOT NULL "
-								+ " AND new.Electronics_Model IS NOT NULL "
-								+ " AND new.RAM IS NOT NULL "
-								+ " AND new.hard_drive IS NOT NULL "
-								+ " AND new.GPU IS NOT NULL "
-								+ " AND new.Model_Number IS NOT NULL "
-								+ " AND new.Operating_System IS NOT NULL "
-								+ " AND new.Electronics_Weight IS NOT NULL "
-								+ " AND new.Electronics_item_dimension_LxWxH IS NOT NULL "
-								+ " AND new.USB_ports IS NOT NULL ) "
-								+ " OR "
-								+ " ( new.category = 'Misc' ) "
-								+ " OR"
-								+ " ( new.category = 'Music' "
-								+ " AND new.Label IS NOT NULL "
-								+ " AND new.Music_Genre IS NOT NULL "
-								+ " AND new.Music_Release_Date IS NOT NULL "
-								+ " AND new.Music_Length IS NOT NULL ) "
-								+ " OR "
-								+ " ( new.category = 'Vehicles' "
-								+ " AND new.Vehicle_Model IS NOT NULL "
-								+ " AND new.Make IS NOT NULL "
-								+ " AND new.mileage IS NOT NULL "
-								+ " AND new.Vehicle_Year IS NOT NULL "
-								+ " AND new.Exterior_Color IS NOT NULL "
-								+ " AND (new.Number_Of_Cylinders >-1 AND new.Number_Of_Cylinders < 13) "
-								+ " AND new.VIN IS NOT NULL "
-								+ " AND new.Vehicle_title IS NOT NULL "
-								+ " AND new.Drive_Type IS NOT NULL "
-								+ " AND new.VEngine IS NOT NULL "
-								+ " AND new.Transmission IS NOT NULL "
-								+ " AND new.VCondition IN ('used','new')) ) Then "
-								+ " SIGNAL sqlstate '45000' "
-								+ " SET message_text = 'Must fill all attributes for a category.'; "
-								+ " elseif (new.current_bid <= new.previous_bid) then "
-								+ " signal sqlstate '45000' "
-								+ " SET message_text = 'No update with a bid lower than current bid.'; "
-								+ " elseif (new.Vehicle_title = 'N') then "
-								+ " signal sqlstate '45000' "
-								+ " set message_text = 'Vehicle doesn\'t have title'; "
-								+ " end if; "
-								+ " end; "
-								+ " $$ "
-								+ " create Trigger greater_bid "
-								+ " before update on items "
-								+ " for each row "
-								+ " begin "
-								+ " if (new.current_bid <= new.previous_bid) then "
-								+ " signal sqlstate '45000' "
-								+ " SET message_text = 'No update with a bid lower than current bid.'; "
-								+ " end if; "
-								+ " end; "
-								+ " $$ "
-								+ " DELIMITER ; ";
-						try {
-							int a=statement.executeUpdate(input);
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}*/
-						
-						
+					
 			}
 		});
 
@@ -481,7 +342,7 @@ public class My_window extends JFrame
 		
 		
 		JButton btnNewButton_9 = new JButton("Populate");
-		// resets both fields
+	
 		btnNewButton_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 Statement statement = null;
@@ -491,7 +352,7 @@ public class My_window extends JFrame
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-				String input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aaren', 'logie', 'alogie234@gmail.com', '71'); ";
+				String input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aaren', 'logie', 'alogie234@gmail.com', '71') ";
 						
 				try {
 					int a=statement.executeUpdate(input);
@@ -499,7 +360,7 @@ public class My_window extends JFrame
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aaren', 'logie', 'bytheby@gmail.com', '712A'); ";
+				input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aaren', 'logie', 'bytheby@gmail.com', '712A') ";
 				
 				try {
 					int a=statement.executeUpdate(input);
@@ -507,35 +368,35 @@ public class My_window extends JFrame
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aarika', 'cowin', 'acowin249@hotmail.com', '33'); ";
+				input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aarika', 'cowin', 'acowin249@hotmail.com', '33') ";
 				try {
 					int a=statement.executeUpdate(input);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				input="insert into belongsto(ID,Email) values (16,'alogie234@gmail.com');";
+				input="insert into belongsto(ID,Email) values (16,'alogie234@gmail.com')";
 				try {
 					int a=statement.executeUpdate(input);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				input="insert into belongsto(ID,Email) values (17,'alogie234@gmail.com');";
+				input="insert into belongsto(ID,Email) values (17,'alogie234@gmail.com')";
 				try {
 					int a=statement.executeUpdate(input);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				input="insert into belongsto(ID,Email) values (18,'bytheby@gmail.com');";
+				input="insert into belongsto(ID,Email) values (18,'bytheby@gmail.com')";
 				try {
 					int a=statement.executeUpdate(input);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (16,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Action','Pinguin',1,117,'0135-895SAsdf','Me');";
+				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (16,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Action','Pinguin','T',117,'0135-895SAsdf','Me')";
 				try {
 					int a=statement.executeUpdate(input);
 				} catch (SQLException e1) {
@@ -543,14 +404,14 @@ public class My_window extends JFrame
 					e1.printStackTrace();
 				}
 				
-				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (17,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Adventure','Pinguin',0,117,'0135-895SAsdf','Me');";
+				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (17,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Adventure','Pinguin','F',117,'0135-895SAsdf','Me')";
 				try {
 					int a=statement.executeUpdate(input);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (18,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Scary','Pinguin',0,117,'0135-895SAsdf','Me');";
+				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (18,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Scary','Pinguin','F',117,'0135-895SAsdf','Me')";
 				try {
 					int a=statement.executeUpdate(input);
 				} catch (SQLException e1) {

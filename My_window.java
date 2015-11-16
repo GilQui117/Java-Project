@@ -15,9 +15,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,7 +34,8 @@ public class My_window extends JFrame
     private Connection connection1;
     private JTable table;
     private JScrollPane scroll;
-    
+
+	//here components for frame is created
    
 	public My_window(Connection connection2)
 	{
@@ -68,9 +67,12 @@ public class My_window extends JFrame
 		
 		
 		scroll = new JScrollPane();
+		
+		
 		scroll.setBounds(30, 215, 824, 314);
 		contentPane.add(scroll);
 		
+	
 		JButton btnNewButton = new JButton("Execute");
 		//here text inputted is stored into string input
 		btnNewButton.addActionListener(new ActionListener() 
@@ -79,7 +81,7 @@ public class My_window extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
                                 ResultSet rs;
-                                Input = textArea.getText().toString();  
+				Input = textArea.getText().toString();  
                             try {
                                 Statement statement=connection1.createStatement();
                                 if(Input.charAt(0)=='U'||Input.charAt(0)=='u'||Input.charAt(0)=='D'||Input.charAt(0)=='d'||Input.charAt(0)=='I'||Input.charAt(0)=='i'||Input.charAt(0)=='c'||Input.charAt(0)=='C'){
@@ -110,13 +112,9 @@ public class My_window extends JFrame
                                             p++;
                                         }
                                         contentPane.remove(scroll);
-                                      //not sure if this is how to add to bottom of screen im pretty
-                                        //sure the data is in the string arrays though
+                                    
                                         table = new JTable(data,column);
-                                        //table.setModel(new DefaultTableModel(data,column));
-                                        //table.setPreferredScrollableViewportSize(new Dimension(1000,1000));
-                                        //table.setFillsViewportHeight(true);
-                                        //contentPane.add(table);
+                                     
                                         scroll = new JScrollPane(table);
                                 		table.setFillsViewportHeight(true);
                                 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -148,10 +146,13 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_2 = new JButton("Union");
-		// resets both fields
+		
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("select * from account where First_Name = 'abc' union select * from account where First_Name = 'g';");
+				textArea.setText("select * from Items where category = 'Books' And Books_Genre = 'Action'"
+						+ " Union "
+						+ "select * from Items where category = 'Books' and books_Genre = 'Adventure';");
+
 				 btnNewButton.doClick();
 			}
 		});
@@ -161,10 +162,11 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_3 = new JButton("Intersection");
-		// resets both fields
+		
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("Not here yet. ");
+				textArea.setText("select * from account a where length(password) < 14 AND EXISTS "
+						+ "(select * from account b where NOT( b.password rlike '[0-9]' AND b.password rlike '[a-z]') AND a.email = b.email);");
 				 btnNewButton.doClick();
 			}
 		});
@@ -174,10 +176,10 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_4 = new JButton("Difference");
-		// resets both fields
+	
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("Not here yet. ");
+				textArea.setText("select * from account a1, (select * from account a2 where a2.email NOT like '%@gmail.com') as s1 where a1.email = s1.email;");
 				 btnNewButton.doClick();
 			}
 		});
@@ -187,10 +189,15 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_5 = new JButton("Division");
-		// resets both fields
+	
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("Not here yet. ");
+				textArea.setText("SELECT  a1.email "
+						+ " FROM account as a1 "
+						+ " WHERE (select count(coun1.category) from (Select s1.category, s2.email from (SELECT Distinct i3.category FROM Items as i3) as s1, "
+						+ " (SELECT Distinct i2.category, b2.email "
+						+ " FROM  belongsTo as b2, Items as i2 "
+						+ " WHERE  b2.ID = i2.ID) as s2 where s1.category = s2.category) as coun1 where a1.email = coun1.email) = 8;");
 				 btnNewButton.doClick();
 			}
 		});
@@ -201,10 +208,10 @@ public class My_window extends JFrame
 		
 		
 		JButton btnNewButton_6 = new JButton("Aggregation");
-		// resets both fields
+	
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("Not here yet. ");
+				textArea.setText("select count(*) from account;");
 				 btnNewButton.doClick();
 			}
 		});
@@ -214,10 +221,10 @@ public class My_window extends JFrame
 		contentPane.setVisible(true);
 		
 		JButton btnNewButton_7 = new JButton("Join");
-		// resets both fields
+	
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("Not here yet. ");
+				textArea.setText("select * from belongsTo as b inner join account as a inner join items as i where b.email = a.email AND i.ID = b.ID;");
 				 btnNewButton.doClick();
 			}
 		});
@@ -228,7 +235,7 @@ public class My_window extends JFrame
 		
 		
 		JButton btnNewButton_8 = new JButton("Create");
-		// resets both fields
+	
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 Statement statement = null;
@@ -454,6 +461,8 @@ public class My_window extends JFrame
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+						
+						
 			}
 		});
 
@@ -463,11 +472,82 @@ public class My_window extends JFrame
 		
 		
 		JButton btnNewButton_9 = new JButton("Populate");
-		// resets both fields
+	
 		btnNewButton_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("Not here yet. ");
-				 btnNewButton.doClick();
+				 Statement statement = null;
+					try {
+						statement = connection1.createStatement();
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+				String input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aaren', 'logie', 'alogie234@gmail.com', '71'); ";
+						
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aaren', 'logie', 'bytheby@gmail.com', '712A'); ";
+				
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				input="Insert into account(First_Name, Last_Name, EMAIL, Password) values ('Aarika', 'cowin', 'acowin249@hotmail.com', '33'); ";
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				input="insert into belongsto(ID,Email) values (16,'alogie234@gmail.com');";
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				input="insert into belongsto(ID,Email) values (17,'alogie234@gmail.com');";
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				input="insert into belongsto(ID,Email) values (18,'bytheby@gmail.com');";
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (16,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Action','Pinguin',1,117,'0135-895SAsdf','Me');";
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (17,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Adventure','Pinguin',0,117,'0135-895SAsdf','Me');";
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				input="Insert into items(ID,name,description,time_left,item_condition,previous_bid,current_bid,starting_bid,selling_price,category,Books_Genre,Books_Publisher,hardcover,Page_Number,ISBN,author) values (18,'test item','this is only a test description',CURRENT_TIMESTAMP,'the item is a fake',0,1,100,9999,'Books','Scary','Pinguin',0,117,'0135-895SAsdf','Me');";
+				try {
+					int a=statement.executeUpdate(input);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 

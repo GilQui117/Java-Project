@@ -109,8 +109,8 @@ public class Demo extends JPanel {
     	{
     		//all text is stored in the strings
     		T1 = R1.getText().toString();
-    		T2 = R2.getText().toString();
-    		T3 = R3.getText().toString();
+    		T2 =R2.getText().toString();
+    		T3 =R3.getText().toString();
     		T4 = R4.getText().toString();
     		T5 = R5.getText().toString();
     		T6 = R6.getText().toString();

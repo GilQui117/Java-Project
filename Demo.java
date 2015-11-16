@@ -1,11 +1,17 @@
-//all things needed for this program
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.sql.*;
+
+
+
+
+
 
 public class Demo extends JPanel {
 	//all the buttons,textfields, labels used for the first window, and the strings used for the inputs
@@ -108,16 +114,16 @@ public class Demo extends JPanel {
     	public void actionPerformed(ActionEvent e)
     	{
     		//all text is stored in the strings
-    		T1 = "jdbc:mysql://";	//R1.getText().toString();
-    		T2 ="localhost"; 	//R2.getText().toString();
-    		T3 = "3306";	//R3.getText().toString();
-    		T4 = "auction";	//R4.getText().toString();
-    		T5 = 	"root";//R5.getText().toString();
-    		T6 = 	R6.getText().toString();
-    		T7 = 	"com.mysql.jdbc.Driver";//R7.getText().toString();
+    		T1 =R1.getText().toString();
+    		T2 =R2.getText().toString();
+    		T3 =R3.getText().toString();
+    		T4 = R4.getText().toString();
+    		T5 = R5.getText().toString();
+    		T6 = R6.getText().toString();
+    		T7 = R7.getText().toString();
     		String T8 = T1 + T2 + ":" + T3 + "/" + T4;
     		try {
-				Class.forName("com.mysql.jdbc.Driver").newInstance();//T7).newInstance();
+				Class.forName(T7).newInstance();
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -136,9 +142,9 @@ public class Demo extends JPanel {
                     Logger.getLogger(Demo.class.getName()).log(Level.SEVERE, null, ex);
                     System.exit(0);
                 }
-    		JFrame anotherframe = new My_window(connection);
+    	JFrame anotherframe = new My_window(connection);
     		setVisible(false);
-    		anotherframe.setVisible(true);
+    	anotherframe.setVisible(true);
     		self.dispose();
     		
     		
@@ -166,3 +172,4 @@ public class Demo extends JPanel {
         
     }
 }
+		
